@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="VISIONS Companion" android:textSize="20sp" android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/etPiUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pi URL (e.g. http://192.168.1.100:5000)" />
+
+    <EditText
+        android:id="@+id/etToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="INCOMING_AUTH_TOKEN" android:layout_marginTop="8dp"/>
+
+    <Switch
+        android:id="@+id/swForward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable forwarding" android:layout_marginTop="12dp"/>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save" android:layout_marginTop="12dp"/>
+
+    <Button
+        android:id="@+id/btnRequestPerm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Request RECEIVE_SMS Permission" android:layout_marginTop="12dp"/>
+
+    <Button
+        android:id="@+id/btnOpenSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open App Settings (battery/auto-start)" android:layout_marginTop="12dp"/>
+</LinearLayout>
