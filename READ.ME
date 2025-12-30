@@ -1,0 +1,33 @@
+````markdown
+VISIONS Companion Android app — README
+
+Overview
+- This minimal Android app listens for incoming SMS and forwards the sender and body to the VISIONS Pi at /incoming_sms with header X-VISIONS-AUTH.
+- Configure Pi URL and token inside the app (MainActivity) and enable forwarding.
+
+Install & build
+1. Open Android Studio.
+2. Create a new project (Empty Activity) or import these files into `app/src/main/...`.
+3. Replace the package name if needed (update Manifest and Kotlin package statements).
+4. Add the dependencies (OkHttp, coroutines) to module build.gradle and sync.
+5. Connect device (USB + adb) or use emulator (emulator can't receive SMS from carrier; you can simulate with `adb emu sms send <from> <message>`).
+6. Run the app.
+
+Permissions & testing
+- On first run click "Request RECEIVE_SMS Permission" to grant the RECEIVE_SMS runtime permission.
+- Set Pi URL (e.g., http://192.168.1.100:5000) and token (INCOMING_AUTH_TOKEN) then Save.
+- Ensure phone is on same Wi-Fi as Pi (or Pi reachable over the network).
+- Send an SMS to the phone from another phone. The app should forward automatically (or use adb to simulate: `adb emu sms send 15551234567 "Test"` on emulator).
+- On the Pi check `visions_log.csv` for incoming_sms_forwarded events and check server logs.
+
+Example curl (simulate forwarding from phone):
+  curl -X POST "http://<PI_IP>:5000/incoming_sms" \
+    -H "Content-Type: application/json" \
+    -H "X-VISIONS-AUTH: <token>" \
+    -d '{"from":"+15551234567","body":"Hi"}'
+
+Notes & next steps
+- For greater reliability use WorkManager retries, persist unsent forwards and retry later.
+- Consider TLS (HTTPS) or VPN when posting over the internet.
+- For full blocking features or to auto-reply from phone rather than Twilio, implement additional endpoints (e.g., server tells phone to auto-reply and phone app sends SMS).
+- On some phones you may need to whitelist the app from battery optimization or enable auto-start to ensure the receiver works reliably.
