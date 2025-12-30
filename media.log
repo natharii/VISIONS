@@ -1,0 +1,30 @@
+// Optional helper - not strictly required because SmsReceiver uses OkHttp directly.
+// Left here in case you want to centralize network logic.
+package com.visions.app
+
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+
+object NetworkSender {
+    private val client = OkHttpClient()
+    private val JSON = "application/json; charset=utf-8".toMediaType()
+
+    fun postIncomingSms(piUrl: String, token: String, from: String, bodyText: String): Int {
+        val json = JSONObject()
+        json.put("from", from)
+        json.put("body", bodyText)
+        val bodyReq = json.toString().toRequestBody(JSON)
+        val req = Request.Builder()
+            .url(piUrl.trimEnd('/') + "/incoming_sms")
+            .addHeader("Content-Type", "application/json")
+            .addHeader("X-VISIONS-AUTH", token)
+            .post(bodyReq)
+            .build()
+        client.newCall(req).execute().use { resp ->
+            return resp.code
+        }
+    }
+}
